@@ -20,6 +20,11 @@ use Tinify;
 class TinifyService
 {
     /**
+     * @var string $key
+     */
+    private $key;
+
+    /**
      * The tinify config container.
      *
      * @var TinifyConfig $tinifyConfig
@@ -40,7 +45,9 @@ class TinifyService
      */
     public function __construct(array $data = [])
     {
-        Tinify\setKey($data['key']);
+        $this->setKey($data['key']);
+        Tinify\setKey($this->key());
+
         $this->setTinifyConfig($data['tinify/config']);
     }
 
@@ -68,6 +75,25 @@ class TinifyService
         }
 
         return $this->connectionValidated;
+    }
+
+    /**
+     * @return string
+     */
+    public function key()
+    {
+        return $this->key;
+    }
+
+    /**
+     * @param string $key Key for TinifyService.
+     * @return self
+     */
+    public function setKey($key)
+    {
+        $this->key = $key;
+
+        return $this;
     }
 
     // DEPENDENCIES

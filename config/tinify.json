@@ -1,5 +1,3 @@
 {
-    "tinify": {
-        "max_compressions": 500
-    }
+    "max_compressions": 500
 }

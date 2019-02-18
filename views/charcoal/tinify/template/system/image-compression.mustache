@@ -1,6 +1,9 @@
 {{!--
 `charcoal/tinify/template/system/image-compression`
 --}}
+{{# addCss }}
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+{{/ addCss }}
 
 {{> charcoal/admin/template/inc.header }}
 
@@ -10,8 +13,17 @@
     <section class="o-container -top -bottom">
         {{> charcoal/admin/widget/feedbacks }}
         <div class="dashboard">
+            <div class="row">
+                <div class="col-12">
+                    {{> charcoal/tinify/widget/tinify/info }}
+                </div>
+            </div>
         </div>
     </section>
 </main>
+
+{{# addJs }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+{{/ addJs }}
 
 {{> charcoal/admin/template/inc.footer }}

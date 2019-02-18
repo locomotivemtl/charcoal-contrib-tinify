@@ -4,7 +4,7 @@
             "templates": {
                 "tinify/compression": {
                     "ident": "charcoal/tinify/template/system/image-compression",
-                    "route": "tinify/system/compression"
+                    "route": "/tinify/system/compression"
                 }
             }
         },
