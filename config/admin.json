@@ -1,0 +1,23 @@
+{
+    "admin": {
+        "routes": {
+            "templates": {
+                "tinify/compression": {
+                    "ident": "charcoal/tinify/template/system/image-compression",
+                    "route": "tinify/system/compression"
+                }
+            }
+        },
+        "system_menu": {
+            "items": {
+                "users": {
+                    "required_acl_permissions": ["system/admin"],
+                    "active": true,
+                    "label": "Image compression",
+                    "icon_css": "fa fa-compress",
+                    "url": "tinify/system/compression"
+                }
+            }
+        }
+    }
+}
