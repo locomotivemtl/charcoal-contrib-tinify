@@ -1,3 +1,4 @@
 {
-    "max_compressions": 500
+    "max_compressions": 500,
+    "base_path": "uploads"
 }
