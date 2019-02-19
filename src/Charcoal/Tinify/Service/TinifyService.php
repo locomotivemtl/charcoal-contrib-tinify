@@ -3,7 +3,15 @@
 namespace Charcoal\Tinify\Service;
 
 //Psr
+use Charcoal\Admin\Ui\FeedbackContainerTrait;
 use RuntimeException;
+
+// from charcoal-core
+use Charcoal\Model\ModelFactoryTrait;
+use Charcoal\Model\ModelInterface;
+
+// from charcoal-translator
+use Charcoal\Translator\TranslatorAwareTrait;
 
 // local dependencies
 use Charcoal\Tinify\TinifyConfig;
@@ -19,6 +27,10 @@ use Tinify;
  */
 class TinifyService
 {
+    use ModelFactoryTrait;
+    use TranslatorAwareTrait;
+    use FeedbackContainerTrait;
+
     /**
      * @var string $key
      */
@@ -45,10 +57,20 @@ class TinifyService
      */
     public function __construct(array $data = [])
     {
+        // Satisfies local dependencies
         $this->setKey($data['key']);
         Tinify\setKey($this->key());
 
         $this->setTinifyConfig($data['tinify/config']);
+
+        // Satisfies ModelFactoryTrait
+        $this->setModelFactory($data['model/factory']);
+
+        // Satisfies TranslatorAwareTrait
+        $this->setTranslator($data['translator']);
+
+        // create dependable tables
+        $this->createObjTable($this->registryProto());
     }
 
     /**
@@ -70,6 +92,7 @@ class TinifyService
      */
     public function validateConnection()
     {
+
         if (!$this->connectionValidated) {
             $this->connectionValidated = \Tinify\validate();
         }
@@ -106,8 +129,6 @@ class TinifyService
         return $this->totalSize;
     }
 
-
-
     /**
      * Get images from basePath and store their data in an array.
      *
@@ -119,7 +140,7 @@ class TinifyService
             return $this->filesData;
         }
 
-        $basePath = $this->tinifyConfig()->basePath();
+        $basePath   = $this->tinifyConfig()->basePath();
         $extensions = implode(',', $this->tinifyConfig()->fileExtensions());
 
         $files = $this->globRecursive(
@@ -131,7 +152,7 @@ class TinifyService
 
         foreach ($files as $file) {
             $filesData[] = array_merge([
-                'hash' => md5_file($file),
+                'id'   => md5_file($file),
                 'size' => filesize($file)
             ], pathinfo($file));
         }
@@ -211,5 +232,45 @@ class TinifyService
         $this->tinifyConfig = $tinifyConfig;
 
         return $this;
+    }
+
+    /**
+     * @return ModelInterface|mixed
+     */
+    protected function registryProto()
+    {
+        if (isset($this->registryProto)) {
+            return $this->registryProto;
+        }
+
+        $this->registryProto = $this->modelFactory()->create($this->tinifyConfig()->registryObject());
+
+        return $this->registryProto;
+    }
+
+    // Utils
+    // ==========================================================================
+
+    /**
+     * @param ModelInterface $proto Prototype to ensure table creation for.
+     * @return void
+     */
+    private function createObjTable(ModelInterface $proto)
+    {
+        $obj = $proto;
+        if (!$obj) {
+            return;
+        }
+
+        if ($obj->source()->tableExists() === false) {
+            $obj->source()->createTable();
+            $msg = $this->translator()->translate('Database table created for "{{ objType }}".', [
+                '{{ objType }}' => $obj->objType()
+            ]);
+            $this->addFeedback(
+                'notice',
+                '<span class="fa fa-asterisk" aria-hidden="true"></span><span>&nbsp; '.$msg.'</span>'
+            );
+        }
     }
 }

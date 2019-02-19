@@ -1,0 +1,199 @@
+{
+    "sources": {
+        "default": {
+            "type": "database",
+            "table": "tinify_registries"
+        }
+    },
+    "default_source": "default",
+
+    "default_data": {},
+
+    "labels": {
+        "name": {
+            "en": "Registry",
+            "fr": "Régistre"
+        },
+        "singular_name": {
+            "en": "Registry",
+            "fr": "Régistre"
+        },
+        "edit_item": {
+            "en": "Edit Registry",
+            "fr": "Modifier le régistre"
+        },
+        "create_item": {
+            "en": "Create Registry",
+            "fr": "Créer un régistre"
+        },
+        "new_item": {
+            "en": "New Registry",
+            "fr": "Nouveau régistre"
+        },
+        "all_items": {
+            "en": "All Registries",
+            "fr": "Tous les régistres"
+        },
+        "menu_items": {
+            "en": "Registry",
+            "fr": "Régistre"
+        }
+    },
+
+    "properties": {
+        "id": {
+            "type": "id",
+            "mode": "custom"
+        }
+    },
+    "key": "id",
+
+    "admin": {
+        "lists": {
+            "default": {
+                "label": {},
+                "properties": [
+                    "size",
+                    "original_size",
+                    "memory_saved",
+                    "filename",
+                    "extension"
+                ],
+                "list_actions": [
+                    {
+                        "label": {
+                            "en": "New registry",
+                            "fr": "Nouvel registry"
+                        },
+                        "ident": "create",
+                        "url": "object/edit?main_menu={{main_menu}}&obj_type={{obj_type}}"
+                    }
+                ],
+                "object_actions": {
+                    "edit": {
+                        "label": {
+                            "en": "Modify",
+                            "fr": "Modifier"
+                        },
+                        "url": "object/edit?main_menu={{main_menu}}&obj_type={{obj_type}}&obj_id={{id}}",
+                        "priority": 1
+                    },
+                    "goto": {
+                        "label": {
+                            "en": "Go to page",
+                            "fr": "Voir la page"
+                        },
+                        "url": "{{baseUrl}}{{url}}",
+                        "priority": 2
+                    },
+                    "clone": {
+                        "label": {
+                            "en": "Clone",
+                            "fr": "Cloner"
+                        },
+                        "url": "object/edit?main_menu={{main_menu}}&obj_type={{obj_type}}&clone_id={{id}}",
+                        "priority": 3
+                    },
+                    "delete": {
+                        "label": {
+                            "en": "Delete",
+                            "fr": "Supprimer"
+                        },
+                        "priority": 4
+                    }
+                },
+                "orders": {
+                    "position": {
+                        "property": "position",
+                        "mode": "asc"
+                    }
+                }
+            }
+        },
+        "default_list": "default",
+
+        "forms": {
+            "default": {
+                "label": {},
+                "groups": {
+                    "info": {
+                        "title": {
+                            "en": "Info",
+                            "fr": "Info"
+                        },
+                        "show_title": false,
+                        "show_header": false,
+                        "icon": "info",
+                        "layout": {
+                            "structure": [
+                                {"columns": [1]}
+                            ]
+                        },
+                        "priority": 10,
+                        "properties": [
+                            ""
+                        ]
+                    },
+                    "revisions": {
+                        "title": {
+                            "fr": "Révisions",
+                            "en": "Revisions"
+                        },
+                        "show_title": false,
+                        "show_header": false,
+                        "icon": "floppy-o",
+                        "template": "charcoal/admin/widget/form-group/object-revisions",
+                        "type": "charcoal/admin/widget/form-group/object-revisions",
+                        "priority": 8000
+                    }
+                },
+                "sidebars": {
+                    "default": {
+                        "properties": [
+                            "created",
+                            "created_by",
+                            "last_modified",
+                            "last_modified_by"
+                        ]
+                    }
+                }
+            }
+        },
+        "default_form": "default",
+
+        "dashboards": {
+            "admin.edit": {
+                "layout": {
+                    "structure": [
+                        {"columns": [1]}
+                    ]
+                },
+                "widgets": {
+                    "form": {
+                        "type": "charcoal/admin/widget/object-form",
+                        "form_ident": "default",
+                        "group_display_mode": "tab"
+                    }
+                }
+            },
+            "admin.table": {
+                "layout": {
+                    "structure": [
+                        {"columns": [1]}
+                    ]
+                },
+                "widgets": {
+                    "table": {
+                        "type": "charcoal/admin/widget/table",
+                        "collection_ident": "default",
+                        "sortable": true,
+                        "data_sources": ["request"]
+                    }
+                }
+            }
+        },
+        "default_create_dashboard": "admin.edit",
+        "default_edit_dashboard": "admin.edit",
+        "default_collection_dashboard": "admin.table"
+    }
+}
