@@ -120,8 +120,12 @@ class TinifyService
         }
 
         $basePath = $this->tinifyConfig()->basePath();
+        $extensions = implode(',', $this->tinifyConfig()->fileExtensions());
 
-        $files = $this->globRecursive($basePath.'/*.{jpg,png,jpeg}', GLOB_BRACE);
+        $files = $this->globRecursive(
+            sprintf('%s/*.{%s}', $basePath, $extensions),
+            GLOB_BRACE
+        );
 
         $filesData = [];
 

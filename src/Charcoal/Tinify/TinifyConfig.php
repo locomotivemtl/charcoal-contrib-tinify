@@ -27,6 +27,13 @@ class TinifyConfig extends AbstractConfig
     private $basePath;
 
     /**
+     * Supported file extensions
+     *
+     * @var array $fileExtensions
+     */
+    private $fileExtensions;
+
+    /**
      * The default data is defined in a JSON file.
      *
      * @return array
@@ -66,7 +73,7 @@ class TinifyConfig extends AbstractConfig
      */
     public function basePath()
     {
-        if (isset($this->basePath) || !is_string($this->basePath)) {
+        if (!isset($this->basePath) || !is_string($this->basePath)) {
             throw new RuntimeException(sprintf(
                 'Base Path is not set or not of type (string) in [%s]',
                 get_class($this)
@@ -83,6 +90,33 @@ class TinifyConfig extends AbstractConfig
     public function setBasePath($basePath)
     {
         $this->basePath = $basePath;
+
+        return $this;
+    }
+
+    /**
+     * @throws RuntimeException When the file extensions is not set or empty.
+     * @return array
+     */
+    public function fileExtensions()
+    {
+        if (!isset($this->fileExtensions) || empty($this->fileExtensions)) {
+            throw new RuntimeException(sprintf(
+                'File Extensions is not set or empty in [%s]',
+                get_class($this)
+            ));
+        }
+
+        return $this->fileExtensions;
+    }
+
+    /**
+     * @param array $fileExtensions FileExtensions for TinifyConfig.
+     * @return self
+     */
+    public function setFileExtensions(array $fileExtensions)
+    {
+        $this->fileExtensions = $fileExtensions;
 
         return $this;
     }

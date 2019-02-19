@@ -1,4 +1,11 @@
 {
     "max_compressions": 500,
-    "base_path": "uploads"
+    "base_path": "uploads",
+    "file_extensions": [
+        "jpg",
+        "jpeg",
+        "png"
+    ],
+    "log_obj": "",
+    "registry_obj": ""
 }
