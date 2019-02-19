@@ -34,6 +34,20 @@ class TinifyConfig extends AbstractConfig
     private $fileExtensions;
 
     /**
+     * The model that'll serve to keep track of currently optimized images.
+     *
+     * @var mixed $registryObject
+     */
+    private $registryObject;
+
+    /**
+     * The model that'll serve to log image compression.
+     *
+     * @var mixed $logObject
+     */
+    private $logObject;
+
+    /**
      * The default data is defined in a JSON file.
      *
      * @return array
@@ -75,7 +89,7 @@ class TinifyConfig extends AbstractConfig
     {
         if (!isset($this->basePath) || !is_string($this->basePath)) {
             throw new RuntimeException(sprintf(
-                'Base Path is not set or not of type (string) in [%s]',
+                'Base Path is not defined or not of type (string) for [%s]',
                 get_class($this)
             ));
         }
@@ -102,7 +116,7 @@ class TinifyConfig extends AbstractConfig
     {
         if (!isset($this->fileExtensions) || empty($this->fileExtensions)) {
             throw new RuntimeException(sprintf(
-                'File Extensions is not set or empty in [%s]',
+                'File Extensions is not defined or empty for [%s]',
                 get_class($this)
             ));
         }
@@ -117,6 +131,60 @@ class TinifyConfig extends AbstractConfig
     public function setFileExtensions(array $fileExtensions)
     {
         $this->fileExtensions = $fileExtensions;
+
+        return $this;
+    }
+
+    /**
+     * @throws RuntimeException When the registry object is not defined.
+     * @return mixed
+     */
+    public function registryObject()
+    {
+        if (!isset($this->registryObject)) {
+            throw new RuntimeException(sprintf(
+                'Registry Object is not defined for [%s]',
+                get_class($this)
+            ));
+        }
+
+        return $this->registryObject;
+    }
+
+    /**
+     * @param mixed $registryObject RegistryObject for TinifyConfig.
+     * @return self
+     */
+    public function setRegistryObject($registryObject)
+    {
+        $this->registryObject = $registryObject;
+
+        return $this;
+    }
+
+    /**
+     * @throws RuntimeException When the log object is not defined.
+     * @return mixed
+     */
+    public function logObject()
+    {
+        if (!isset($this->logObject)) {
+            throw new RuntimeException(sprintf(
+                'Log Object is not defined for [%s]',
+                get_class($this)
+            ));
+        }
+
+        return $this->logObject;
+    }
+
+    /**
+     * @param mixed $logObject LogObject for TinifyConfig.
+     * @return self
+     */
+    public function setLogObject($logObject)
+    {
+        $this->logObject = $logObject;
 
         return $this;
     }

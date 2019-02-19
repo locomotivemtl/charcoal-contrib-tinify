@@ -6,6 +6,6 @@
         "jpeg",
         "png"
     ],
-    "log_obj": "",
-    "registry_obj": ""
+    "registry_object": "charcoal/tinify/object/registry",
+    "log_object": "charcoal/tinify/object/log"
 }
