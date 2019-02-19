@@ -77,6 +77,89 @@ class TinifyService
         return $this->connectionValidated;
     }
 
+    public function numCompressedFiles()
+    {
+        //TODO compare files against database.
+    }
+
+    /**
+     * @return mixed
+     */
+    public function numFiles()
+    {
+        if (!isset($this->numFiles)) {
+            $this->numFiles = count($this->filesData());
+        }
+
+        return $this->numFiles;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function totalSize()
+    {
+        if (!isset($this->totalSize)) {
+            $this->totalSize = array_sum(array_column($this->filesData(), 'size'));
+        }
+
+        return $this->totalSize;
+    }
+
+
+
+    /**
+     * Get images from basePath and store their data in an array.
+     *
+     * @return array
+     */
+    private function filesData()
+    {
+        if (isset($this->filesData)) {
+            return $this->filesData;
+        }
+
+        $basePath = $this->tinifyConfig()->basePath();
+
+        $files = $this->globRecursive($basePath.'/*.{jpg,png,jpeg}', GLOB_BRACE);
+
+        $filesData = [];
+
+        foreach ($files as $file) {
+            $filesData[] = array_merge([
+                'hash' => md5_file($file),
+                'size' => filesize($file)
+            ], pathinfo($file));
+        }
+
+        $this->filesData = $filesData;
+
+        return $this->filesData;
+    }
+
+    /**
+     * Recursively find pathnames matching a pattern
+     *                         an empty array if no file matched or FALSE on error.
+     * @see glob() for a description of the function and its parameters.
+     *
+     * @param  string  $pattern The search pattern.
+     * @param  integer $flags   The glob flags.
+     * @return array   Returns an array containing the matched files/directories,
+     */
+    private function globRecursive($pattern, $flags = 0)
+    {
+        $files = glob($pattern, $flags);
+
+        foreach (glob(dirname($pattern).'/*', (GLOB_ONLYDIR | GLOB_NOSORT)) as $dir) {
+            $files = array_merge($files, $this->globRecursive($dir.'/'.basename($pattern), $flags));
+        }
+
+        return $files;
+    }
+
+    // GETTERS AND SETTERS
+    // ==========================================================================
+
     /**
      * @return string
      */
