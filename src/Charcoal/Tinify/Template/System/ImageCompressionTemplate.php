@@ -38,9 +38,14 @@ class ImageCompressionTemplate extends AdminTemplate
     {
         $data = [];
 
-        $data['key'] = $this->tinifyService()->key();
+        $data['key']                = $this->tinifyService()->key();
         $data['compressions_count'] = $this->tinifyService()->compressionCount();
-        $data['max_compressions'] = $this->tinifyService()->tinifyConfig()->maxCompressions();
+        $data['max_compressions']   = $this->tinifyService()->tinifyConfig()->maxCompressions();
+        $data['total_size']         =
+            number_format(
+                ($this->tinifyService()->totalSize() / 1000000),
+                '2'
+            ).' MB';
 
         return $data;
     }
