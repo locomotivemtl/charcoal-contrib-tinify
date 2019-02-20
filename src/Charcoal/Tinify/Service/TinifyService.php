@@ -48,7 +48,14 @@ class TinifyService
      *
      * @var boolean $connectionValidated
      */
-    protected $connectionValidated = false;
+    private $connectionValidated = false;
+
+    /**
+     * Flag to keep track of the parsing of the files data against the registry.
+     *
+     * @var boolean $dataParsed
+     */
+    private $dataParsed = false;
 
     /**
      * @param array $data The initial data.
@@ -127,6 +134,12 @@ class TinifyService
         }
 
         return $this->totalSize;
+    }
+
+    private function parseFilesData()
+    {
+        foreach ($this->filesData() as &$data) {
+        }
     }
 
     /**

@@ -1,0 +1,61 @@
+
+<div class="o-section" id="{{ widgetId }}">
+    <div class="row">
+        <div class="col-6">
+            <section class="card card-table">
+                <header class="card-header">
+                    <h3 class="card-title mb-0">{{# _t }}Api information{{/ _t }}</h3>
+                </header>
+                <!--<div class="card-body">-->
+                {{# tinifyData }}
+                    <table class="table table-contourless">
+                        <tbody>
+                            <tr>
+                                <th scope="row">{{# _t }}Key{{/ _t }}</th>
+                                <td>{{ key }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">{{# _t }}Compressions Count{{/ _t }}</th>
+                                <td>{{ compressions_count }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">{{# _t }}Max Compressions{{/ _t }}</th>
+                                <td>{{ max_compressions }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">{{# _t }}Total Size{{/ _t }}</th>
+                                <td>{{ total_size }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                {{/ tinifyData }}
+                <!--</div>-->
+                <footer class="card-footer">
+                    <button class="btn btn-lg btn-primary">
+                        <i class="fa fa-compress" aria-hidden="true">&nbsp;</i>
+                        <span class="btn-label">{{# _t }}Opimize{{/ _t }}</span>
+                    </button>
+                </footer>
+            </section>
+        </div>
+
+        <div class="col-6">
+            <section class="card card-table">
+                <header class="card-header">
+                    <h3 class="card-title mb-0">{{# _t }}Api information{{/ _t }}</h3>
+                </header>
+                {{# usageWidget }}
+                {{> charcoal/admin/widget/graph/pie }}
+                {{/ usageWidget }}
+            </section>
+        </div>
+    </div>
+</div>
+
+{{# assets.inject.js }}
+    Charcoal.Admin.manager().add_widget({
+        id: '{{ widgetId }}',
+        type: 'charcoal/admin/widget',
+        widget_type: '{{ type }}'
+    });
+{{/ assets.inject.js }}

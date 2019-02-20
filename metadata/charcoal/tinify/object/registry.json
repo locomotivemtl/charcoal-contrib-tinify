@@ -51,7 +51,6 @@
     "admin": {
         "lists": {
             "default": {
-                "label": {},
                 "properties": [
                     "size",
                     "original_size",
@@ -65,6 +64,7 @@
                             "en": "New registry",
                             "fr": "Nouvel registry"
                         },
+                        "active": false,
                         "ident": "create",
                         "url": "object/edit?main_menu={{main_menu}}&obj_type={{obj_type}}"
                     }
@@ -77,36 +77,16 @@
                         },
                         "url": "object/edit?main_menu={{main_menu}}&obj_type={{obj_type}}&obj_id={{id}}",
                         "priority": 1
-                    },
-                    "goto": {
-                        "label": {
-                            "en": "Go to page",
-                            "fr": "Voir la page"
-                        },
-                        "url": "{{baseUrl}}{{url}}",
-                        "priority": 2
-                    },
-                    "clone": {
-                        "label": {
-                            "en": "Clone",
-                            "fr": "Cloner"
-                        },
-                        "url": "object/edit?main_menu={{main_menu}}&obj_type={{obj_type}}&clone_id={{id}}",
-                        "priority": 3
-                    },
-                    "delete": {
-                        "label": {
-                            "en": "Delete",
-                            "fr": "Supprimer"
-                        },
-                        "priority": 4
                     }
                 },
                 "orders": {
                     "position": {
-                        "property": "position",
-                        "mode": "asc"
+                        "property": "created",
+                        "mode": "desc"
                     }
+                },
+                "pagination": {
+                    "num_per_page": 100
                 }
             }
         },
@@ -116,36 +96,7 @@
             "default": {
                 "label": {},
                 "groups": {
-                    "info": {
-                        "title": {
-                            "en": "Info",
-                            "fr": "Info"
-                        },
-                        "show_title": false,
-                        "show_header": false,
-                        "icon": "info",
-                        "layout": {
-                            "structure": [
-                                {"columns": [1]}
-                            ]
-                        },
-                        "priority": 10,
-                        "properties": [
-                            ""
-                        ]
-                    },
-                    "revisions": {
-                        "title": {
-                            "fr": "Révisions",
-                            "en": "Revisions"
-                        },
-                        "show_title": false,
-                        "show_header": false,
-                        "icon": "floppy-o",
-                        "template": "charcoal/admin/widget/form-group/object-revisions",
-                        "type": "charcoal/admin/widget/form-group/object-revisions",
-                        "priority": 8000
-                    }
+
                 },
                 "sidebars": {
                     "default": {
@@ -186,7 +137,6 @@
                     "table": {
                         "type": "charcoal/admin/widget/table",
                         "collection_ident": "default",
-                        "sortable": true,
                         "data_sources": ["request"]
                     }
                 }

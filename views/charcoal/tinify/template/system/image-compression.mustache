@@ -1,25 +1,29 @@
 {{!--
 `charcoal/tinify/template/system/image-compression`
 --}}
-{{# addCss }}
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
-{{/ addCss }}
+<!--{{!# addCss }}-->
+    <!--<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">-->
+<!--{{!/ addCss }}-->
 
 {{> charcoal/admin/template/inc.header }}
-
 
 <main class="c-page-container o-flex_main">
     {{> charcoal/admin/template/inc.page-header }}
     <section class="o-container -top -bottom">
         {{> charcoal/admin/widget/feedbacks }}
         <div class="dashboard">
-            {{> charcoal/tinify/widget/tinify/compression }}
+            {{# imageCompressionWidget }}
+                {{> charcoal/tinify/widget/image-compression }}
+            {{/ imageCompressionWidget }}
+            {{# registryWidget }}
+                {{> charcoal/tinify/widget/compression-registries }}
+            {{/ registryWidget }}
         </div>
     </section>
 </main>
 
-{{# addJs }}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
-{{/ addJs }}
+<!--{{!# addJs }}-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>-->
+<!--{{!/ addJs }}-->
 
 {{> charcoal/admin/template/inc.footer }}

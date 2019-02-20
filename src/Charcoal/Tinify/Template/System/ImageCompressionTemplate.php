@@ -6,9 +6,11 @@ namespace Charcoal\Tinify\Template\System;
 use Charcoal\Admin\AdminTemplate;
 
 // local dependencies
+use Charcoal\Admin\Widget\TableWidget;
 use Charcoal\Tinify\TinifyServiceTrait;
 
 // from pimple
+use Charcoal\Tinify\Widget\ImageCompressionWidget;
 use Pimple\Container;
 use Psr\Http\Message\RequestInterface;
 
@@ -52,23 +54,24 @@ class ImageCompressionTemplate extends AdminTemplate
         return parent::init($request);
     }
 
-    /**
-     * @return array
-     */
-    public function tinifyData()
+    public function registryWidget()
     {
-        $data = [];
+        return $this->widgetFactory()->create(TableWidget::class)->setData([
+            'obj_type' => $this->tinifyService()->tinifyConfig()->registryObject(),
+            'label' => 'Compression Registries',
+            'show_label' => true,
+            'show_table_header' => false
+        ]);
+    }
 
-        $data['key']                = $this->tinifyService()->key();
-        $data['compressions_count'] = $this->tinifyService()->compressionCount();
-        $data['max_compressions']   = $this->tinifyService()->tinifyConfig()->maxCompressions();
-        $data['total_size']         =
-            number_format(
-                ($this->tinifyService()->totalSize() / 1000000),
-                '2'
-            ).' MB';
+    /**
+     * @return mixed
+     */
+    public function ImageCompressionWidget()
+    {
+        $widget = $this->widgetFactory()->create(ImageCompressionWidget::class);
 
-        return $data;
+        return $widget;
     }
 
     /**
