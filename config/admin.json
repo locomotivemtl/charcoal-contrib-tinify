@@ -1,5 +1,20 @@
 {
     "admin": {
+        "assets": {
+            "collections": {
+                "tinify_js": {
+                    "files": [
+                        "vendor/locomotivemtl/charcoal-contrib-tinify/assets/dist/scripts/charcoal.tinify.vendors.min.js",
+                        "vendor/locomotivemtl/charcoal-contrib-tinify/assets/dist/scripts/charcoal.tinify.min.js"
+                    ]
+                },
+                "tinify_css": {
+                    "files": [
+                        "vendor/locomotivemtl/charcoal-contrib-tinify/assets/dist/styles/charcoal.tinify.vendors.css"
+                    ]
+                }
+            }
+        },
         "routes": {
             "templates": {
                 "tinify/compression": {
