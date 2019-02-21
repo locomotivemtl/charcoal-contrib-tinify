@@ -21,6 +21,12 @@
                     "ident": "charcoal/tinify/template/system/image-compression",
                     "route": "/tinify/system/compression"
                 }
+            },
+            "actions": {
+                "tinify/compress/event": {
+                    "methods": [ "GET" ],
+                    "ident": "charcoal/tinify/action/compress-event"
+                }
             }
         },
         "system_menu": {

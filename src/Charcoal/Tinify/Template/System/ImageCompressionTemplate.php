@@ -10,7 +10,7 @@ use Charcoal\Admin\Widget\TableWidget;
 use Charcoal\Tinify\TinifyServiceTrait;
 
 // from pimple
-use Charcoal\Tinify\Widget\ImageCompressionWidget;
+use Charcoal\Tinify\Widget\CompressionDashboardWidget;
 use Pimple\Container;
 use Psr\Http\Message\RequestInterface;
 
@@ -67,9 +67,9 @@ class ImageCompressionTemplate extends AdminTemplate
     /**
      * @return mixed
      */
-    public function ImageCompressionWidget()
+    public function CompressionDashboardWidget()
     {
-        $widget = $this->widgetFactory()->create(ImageCompressionWidget::class);
+        $widget = $this->widgetFactory()->create(CompressionDashboardWidget::class);
 
         return $widget;
     }

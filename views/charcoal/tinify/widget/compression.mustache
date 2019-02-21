@@ -1,0 +1,25 @@
+<div class="o-section" id="{{ widgetId }}">
+    <h1>Compressing Files</h1>
+    <div class="mb-4">
+        File Compressed : <span class="js-progress-text">0</span>
+    </div>
+    <div class="mb-4">
+        <div class="progress">
+            <div class="js-progress-bar progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn text-danger" data-dismiss="dialog">
+            {{# _t }}Cancel{{/ _t }}
+        </button>
+    </div>
+</div>
+
+{{ assets.enqueue.js.tinify_js }}
+
+{{# assets.inject.js }}
+    Charcoal.Admin.manager().add_widget({
+    id: '{{ widgetId }}',
+    type: '{{ type }}'
+    });
+{{/ assets.inject.js }}

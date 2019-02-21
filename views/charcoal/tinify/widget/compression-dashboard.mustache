@@ -31,7 +31,7 @@
                 {{/ tinifyData }}
                 <!--</div>-->
                 <footer class="card-footer">
-                    <button class="btn btn-lg btn-primary">
+                    <button class="btn btn-lg btn-primary js-optimize-btn">
                         <i class="fa fa-compress" aria-hidden="true">&nbsp;</i>
                         <span class="btn-label">{{# _t }}Opimize{{/ _t }}</span>
                     </button>
@@ -52,10 +52,12 @@
     </div>
 </div>
 
+{{ assets.enqueue.js.tinify_js }}
+
 {{# assets.inject.js }}
     Charcoal.Admin.manager().add_widget({
         id: '{{ widgetId }}',
-        type: 'charcoal/admin/widget',
+        type: '{{ type }}',
         widget_type: '{{ type }}'
     });
 {{/ assets.inject.js }}

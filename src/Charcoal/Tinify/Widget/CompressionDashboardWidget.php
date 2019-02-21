@@ -8,6 +8,7 @@ use Charcoal\Admin\AdminWidget;
 use Charcoal\Factory\FactoryInterface;
 use Charcoal\Tinify\TinifyServiceTrait;
 // from pimple
+use Charcoal\Tinify\Widget\UsageWidget;
 use Exception;
 use Pimple\Container;
 
@@ -17,7 +18,7 @@ use Pimple\Container;
  *
  * Image Compression Widget
  */
-class ImageCompressionWidget extends AdminWidget
+class CompressionDashboardWidget extends AdminWidget
 {
     use TinifyServiceTrait;
 
@@ -31,7 +32,7 @@ class ImageCompressionWidget extends AdminWidget
      */
     public function type()
     {
-        return 'charcoal/tinify/widget/image-compression';
+        return 'charcoal/tinify/widget/compression-dashboard';
     }
 
     /**
