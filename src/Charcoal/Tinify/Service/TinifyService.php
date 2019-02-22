@@ -22,6 +22,9 @@ use Tinify\AccountException;
 // I know, that's ugly.
 use Tinify;
 
+// from pdo
+use PDO;
+
 /**
  * Tinify Service
  */
@@ -58,6 +61,25 @@ class TinifyService
     private $dataParsed = false;
 
     /**
+     * Container for compressed files.
+     *
+     * @var array $compressedFiles
+     */
+    private $compressedFiles = [];
+
+    /**
+     * Container for uncompressed files.
+     *
+     * @var array $uncompressedFiles
+     */
+    private $uncompressedFiles = [];
+
+    /**
+     * @var PDO $dbh
+     */
+    private $dbh;
+
+    /**
      * @param array $data The initial data.
      * @return void
      * @link http://php.net/manual/en/language.oop5.decon.php
@@ -75,6 +97,8 @@ class TinifyService
 
         // Satisfies TranslatorAwareTrait
         $this->setTranslator($data['translator']);
+
+        $this->dbh = $data['database'];
 
         // create dependable tables
         $this->createObjTable($this->registryProto());
@@ -107,9 +131,60 @@ class TinifyService
         return $this->connectionValidated;
     }
 
+    /**
+     * @return \Generator
+     */
+    public function compressFiles()
+    {
+        //@todo replace filesData with uncompressed files only.
+        foreach ($this->filesData() as $file) {
+            if (file_exists($file['file'])) {
+                $source = Tinify\fromFile($file['file']);
+                $source->toFile($file['file']);
+
+                $file['id']            = md5_file($file['file']);
+                $file['original_size'] = $file['size'];
+                $file['size']          = filesize($file['file']);
+
+                $registry = $this->modelFactory()
+                                 ->create($this->tinifyConfig()->registryObject())
+                                 ->setData($file);
+
+                $registry->save();
+
+                yield $registry;
+            }
+        }
+    }
+
+    /**
+     * @return mixed
+     */
     public function numCompressedFiles()
     {
-        //TODO compare files against database.
+        if (!isset($this->numCompressedFiles)) {
+            // Ensure the file containers are parsed
+            $this->parseFilesData();
+
+            $this->numCompressedFiles = count($this->compressedFiles);
+        }
+
+        return $this->numCompressedFiles;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function numUncompressedFiles()
+    {
+        if (!isset($this->numUncompressedFiles)) {
+            // Ensure the file containers are parsed
+            $this->parseFilesData();
+
+            $this->numUncompressedFiles = count($this->uncompressedFiles);
+        }
+
+        return $this->numUncompressedFiles;
     }
 
     /**
@@ -136,10 +211,96 @@ class TinifyService
         return $this->totalSize;
     }
 
+    /**
+     * @return mixed
+     */
+    public function totalMemorySaved()
+    {
+        if (!isset($this->totalMemorySaved)) {
+            // Ensure the file containers are parsed
+            $this->parseFilesData();
+
+            $this->totalMemorySaved = array_sum(array_column($this->compressedFiles, 'memory_saved'));
+        }
+
+        return $this->totalMemorySaved;
+    }
+
+    /**
+     * @return float
+     */
+    public function compressionPercentage()
+    {
+        if (!isset($this->compressionPercentage)) {
+            // Ensure the file containers are parsed
+            $this->parseFilesData();
+
+            $this->compressionPercentage = floor(
+                $this->totalMemorySaved() * 100 / (
+                    array_sum(array_column($this->compressedFiles, 'original_size')) +
+                    array_sum(array_column($this->uncompressedFiles, 'size'))
+                )
+            );
+        }
+
+        return $this->compressionPercentage;
+    }
+
+    /**
+     * Fetch the registries from the registries table
+     * and return the data as a dictionary.
+     *
+     * @return mixed
+     */
+    private function fileRegistries()
+    {
+        if (isset($this->fileRegistries)) {
+            return $this->fileRegistries;
+        }
+
+        $q = 'SELECT id, size, original_size, memory_saved FROM `%table%`
+              WHERE active = 1';
+
+        $q   = strtr($q, ['%table%' => $this->registryProto()->source()->table()]);
+        $sth = $this->dbh->prepare($q);
+        $sth->execute();
+
+        $registries = [];
+        $sth->fetchAll(PDO::FETCH_FUNC, function ($id, $size, $originalSize, $memorySaved) use (&$registries) {
+            $registries[$id] = [
+                'size'          => $size,
+                'original_size' => $originalSize,
+                'memory_saved'  => $memorySaved,
+            ];
+        });
+
+        $this->fileRegistries = $registries;
+
+        return $this->fileRegistries;
+    }
+
+    /**
+     * Prepare the file containers.
+     *
+     * @return void
+     */
     private function parseFilesData()
     {
-        foreach ($this->filesData() as &$data) {
+        if (!!$this->dataParsed) {
+            return;
         }
+
+        $this->dataParsed = true;
+
+        $filesData = $this->filesData();
+        array_walk($filesData, function ($data) {
+            if (isset($this->fileRegistries()[$data['id']])) {
+                $this->compressedFiles[] =
+                    array_replace($data, $this->fileRegistries()[$data['id']]);
+            } else {
+                $this->uncompressedFiles[] = $data;
+            }
+        });
     }
 
     /**
@@ -166,6 +327,7 @@ class TinifyService
         foreach ($files as $file) {
             $filesData[] = array_merge([
                 'id'   => md5_file($file),
+                'file' => $file,
                 'size' => filesize($file)
             ], pathinfo($file));
         }

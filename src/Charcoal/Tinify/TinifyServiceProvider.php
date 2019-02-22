@@ -36,6 +36,7 @@ class TinifyServiceProvider implements ServiceProviderInterface
                 'key'           => $container['config']->get('admin.apis.tinify.key'),
                 'tinify/config' => $container['tinify/config'],
                 'model/factory' => $container['model/factory'],
+                'database'      => $container['database'],
                 'translator'    => $container['translator']
             ]);
         };
