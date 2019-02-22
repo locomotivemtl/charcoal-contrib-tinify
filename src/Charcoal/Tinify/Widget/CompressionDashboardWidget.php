@@ -45,7 +45,6 @@ class CompressionDashboardWidget extends AdminWidget
     {
         parent::setDependencies($container);
 
-
         $this->setTinifyService($container['tinify']);
         $this->setWidgetFactory($container['widget/factory']);
     }
@@ -57,18 +56,29 @@ class CompressionDashboardWidget extends AdminWidget
     {
         $data = [];
 
-        $data['key']                = $this->tinifyService()->key();
-        $data['compressions_count'] = $this->tinifyService()->compressionCount();
-        $data['max_compressions']   = $this->tinifyService()->tinifyConfig()->maxCompressions();
-        $data['total_size']         =
+        $data['key']                    = $this->tinifyService()->key();
+        $data['compressions_count']     = $this->tinifyService()->compressionCount();
+        $data['max_compressions']       = $this->tinifyService()->tinifyConfig()->maxCompressions();
+        $data['num_compressed_files']   = $this->tinifyService()->numCompressedFiles();
+        $data['num_uncompressed_files'] = $this->tinifyService()->numUncompressedFiles();
+        $data['total_size']             =
             number_format(
                 ($this->tinifyService()->totalSize() / 1000000),
                 '2'
             ).' MB';
+        $data['total_memory_saved']             =
+            number_format(
+                ($this->tinifyService()->totalMemorySaved() / 1000000),
+                '2'
+            ).' MB';
+        $data['compression_percentage'] = $this->tinifyService()->compressionPercentage();
 
         return $data;
     }
 
+    /**
+     * @return mixed
+     */
     public function usageWidget()
     {
         return $this->widgetFactory()->create(UsageWidget::class);
@@ -85,6 +95,7 @@ class CompressionDashboardWidget extends AdminWidget
                 'Widget factory was not set.'
             );
         }
+
         return $this->widgetFactory;
     }
 

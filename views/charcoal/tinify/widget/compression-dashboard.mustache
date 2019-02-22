@@ -23,8 +23,24 @@
                                 <td>{{ max_compressions }}</td>
                             </tr>
                             <tr>
+                                <th scope="row">{{# _t }}Compressed files{{/ _t }}</th>
+                                <td>{{ num_compressed_files }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">{{# _t }}Uncompressed files{{/ _t }}</th>
+                                <td>{{ num_uncompressed_files }}</td>
+                            </tr>
+                            <tr>
                                 <th scope="row">{{# _t }}Total Size{{/ _t }}</th>
                                 <td>{{ total_size }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">{{# _t }}Total Memory Saved{{/ _t }}</th>
+                                <td>{{ total_memory_saved }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">{{# _t }}Compression percentage{{/ _t }}</th>
+                                <td>{{ compression_percentage }} %</td>
                             </tr>
                         </tbody>
                     </table>
