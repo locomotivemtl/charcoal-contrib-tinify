@@ -11,6 +11,7 @@ use Charcoal\Tinify\TinifyServiceTrait;
 
 // from pimple
 use Charcoal\Tinify\Widget\CompressionDashboardWidget;
+use Charcoal\Tinify\Widget\RegistriesTableWidget;
 use Pimple\Container;
 use Psr\Http\Message\RequestInterface;
 
@@ -54,13 +55,14 @@ class ImageCompressionTemplate extends AdminTemplate
         return parent::init($request);
     }
 
+    /**
+     * @return mixed
+     */
     public function registryWidget()
     {
-        return $this->widgetFactory()->create(TableWidget::class)->setData([
-            'obj_type' => $this->tinifyService()->tinifyConfig()->registryObject(),
-            'label' => 'Compression Registries',
-            'show_label' => true,
-            'show_table_header' => false
+        return $this->widgetFactory()->create(RegistriesTableWidget::class)->setData([
+            'type' => 'charcoal/tinify/widget/registries-table',
+            'obj_type' => $this->tinifyService()->tinifyConfig()->registryObject()
         ]);
     }
 

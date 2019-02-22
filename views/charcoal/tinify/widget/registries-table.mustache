@@ -1,0 +1,62 @@
+<div class="o-section position-relative" id="{{ widgetId }}">
+    <div class="row mt-4">
+        <div class="col-12">
+            <section class="card card-table">
+                <header class="card-header">
+                    <h3 class="card-title mb-0">{{ label }}</h3>
+                </header>
+            {{!--
+                Table Widget Body
+                =================
+
+                @see `charcoal/admin/widget/table`
+
+                This widget expects to be in a context (model) of type `Charcoal\Admin\Widget\Table`.
+            --}}
+                {{# showTableHeader }}
+                    {{> charcoal/admin/widget/table/header }}
+                {{/ showTableHeader }}
+                <div class="c-table-container table-responsive{{^ showTableHeader }} mt-4{{/ showTableHeader }}">
+                    {{# hasObjects }}
+                        <div class="c-table-pagination">
+                            {{> charcoal/admin/widget/table/counter }}
+                        </div>
+                        <table class="table table-bordered table-hover{{# sortable }} table-sortable{{/ sortable }}">
+                            {{# showTableHead }}
+                                {{> charcoal/admin/widget/table/thead }}
+                            {{/ showTableHead }}
+                            {{> charcoal/admin/widget/table/tbody }}
+                            {{# showTableFoot }}
+                                {{> charcoal/admin/widget/table/tfoot }}
+                            {{/ showTableFoot }}
+                        </table>
+                        {{# paginationWidget }}
+                            {{> charcoal/admin/widget/table/pagination }}
+                        {{/ paginationWidget }}
+                    {{/ hasObjects }}
+                    {{^ hasObjects }}
+                        {{> charcoal/admin/widget/table/empty }}
+                    {{/ hasObjects }}
+                </div>
+
+                {{# addJsRequirement }}
+                    <script rel="l10n">
+                            {{> charcoal/admin/l10n/widget.js }}
+                            {{> charcoal/admin/l10n/table.js }}
+                    </script>
+                {{/ addJsRequirement }}
+
+                {{# assets.inject.js }}
+                    Charcoal.Admin.manager().add_widget({
+                        id: '{{ widgetId }}',
+                        type: 'charcoal/tinify/widget/table',
+                        widget_type: '{{ type }}',
+                        data: {{& escapedWidgetDataForJsAsJson }}
+                    });
+                {{/ assets.inject.js }}
+
+                {{> charcoal/admin/widget/inc.loader }}
+            </section>
+        </div>
+    </div>
+</div>
