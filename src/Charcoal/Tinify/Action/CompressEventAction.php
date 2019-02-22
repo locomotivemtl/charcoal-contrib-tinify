@@ -2,17 +2,22 @@
 
 namespace Charcoal\Tinify\Action;
 
+// from charcoal-app
 use Charcoal\App\Action\AbstractAction;
-use Charcoal\Tinify\Helper\CallbackStream;
+
+// from psr-7
+use Charcoal\Tinify\TinifyServiceTrait;
+use Pimple\Container;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Slim\Http\Response;
 
 /**
  * Optimize Action
  */
 class CompressEventAction extends AbstractAction
 {
+    use TinifyServiceTrait;
+
     /**
      * Gets a psr7 request and response and returns a response.
      *
@@ -27,6 +32,24 @@ class CompressEventAction extends AbstractAction
         $this->setMode(self::MODE_EVENT_STREAM);
 
         return $response;
+    }
+
+    /**
+     * Give an opportunity to children classes to inject dependencies from a Pimple Container.
+     *
+     * Does nothing by default, reimplement in children classes.
+     *
+     * The `$container` DI-container (from `Pimple`) should not be saved or passed around, only to be used to
+     * inject dependencies (typically via setters).
+     *
+     * @param Container $container A dependencies container instance.
+     * @return void
+     */
+    protected function setDependencies(Container $container)
+    {
+        parent::setDependencies($container);
+
+        $this->setTinifyService($container['tinify']);
     }
 
     /**
