@@ -12,28 +12,27 @@
      */
     var Compression_Dashboard = function (data) {
         Charcoal.Admin.Widget.call(this, data);
-
-        this.set_properties(data);
     };
 
     Compression_Dashboard.prototype             = Object.create(Charcoal.Admin.Widget.prototype);
     Compression_Dashboard.prototype.constructor = Charcoal.Admin.Widget_Compression_Dashboard;
     Compression_Dashboard.prototype.parent      = Charcoal.Admin.Widget.prototype;
 
-    Compression_Dashboard.prototype.set_properties = function () {
+    Compression_Dashboard.prototype.set_opts = function (opts) {
         // Globals
+        this._opts = opts;
+
         var opts = this.opts() || {};
         this._options = opts.options || {};
-
-        // Elements
-        this.$widget  = this.element();
-        this.$optimize_btn = this.$widget.find('.js-optimize-btn');
 
         return this;
     };
 
     Compression_Dashboard.prototype.init = function () {
-        this.$optimize_btn.on('click', this.on_optimize.bind(this));
+        // Elements
+        this.$widget  = this.element();
+
+        this.$widget.on('click.compression', '.js-optimize-btn',this.on_optimize.bind(this));
     };
 
     Compression_Dashboard.prototype.on_optimize = function () {
@@ -46,7 +45,12 @@
                         Charcoal.Admin.manager().get_widget(this._wid).destroy();
                         Charcoal.Admin.manager().remove_component('widgets',this._wid);
                     }
-                }.bind(this)
+                }.bind(this),
+                onhidden: function () {
+                    $.each(Charcoal.Admin.manager().components.widgets, function (ident, widget) {
+                        widget.reload();
+                    });
+                }
             }
         };
 
@@ -75,6 +79,10 @@
         this._options = $.extend(true, defaultOptions, this._options);
 
         return this._options;
+    };
+
+    Compression_Dashboard.prototype.destroy = function () {
+        this.$widget.off('compression');
     };
 
     Charcoal.Admin.Widget_Compression_Dashboard = Compression_Dashboard;
