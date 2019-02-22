@@ -52,7 +52,7 @@
             }
         };
 
-        this.dialog(dialogOpts, function (response) {
+        var dialog = this.dialog(dialogOpts, function (response) {
             if (response.success) {
                 if (!response.widget_id) {
                     return false;
@@ -62,7 +62,10 @@
 
                 Charcoal.Admin.manager().add_widget({
                     id: response.widget_id,
-                    type: 'charcoal/tinify/widget/compression'
+                    type: 'charcoal/tinify/widget/compression',
+                    close_callback: function () {
+                        dialog.close();
+                    }
                 });
 
                 // Dangerous to re-render multiple times if not removed.

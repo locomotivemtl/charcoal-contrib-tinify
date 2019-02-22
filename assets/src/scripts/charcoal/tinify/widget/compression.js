@@ -22,6 +22,7 @@
         // Globals
         this._options = opts.options || {};
         this._source = null;
+        this._close_callback = opts.close_callback;
 
         // Elements
         this.$widget  = $(this.element());
@@ -33,6 +34,11 @@
 
     Compression.prototype.init = function () {
         this._source = new EventSource('tinify/compress/event');
+
+        this._source.addEventListener('CLOSE', function(e) {
+            this._source.close();
+            this._close_callback();
+        }.bind(this));
 
         this._source.addEventListener('message', function(e) {
             var data = JSON.parse(e.data);

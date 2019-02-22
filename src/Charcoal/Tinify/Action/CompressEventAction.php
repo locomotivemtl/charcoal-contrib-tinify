@@ -63,7 +63,7 @@ class CompressEventAction extends AbstractAction
                 'text'     => sprintf('%s / %s', $i, 10),
                 'progress' => floor(100 / 10 * $i)
             ];
-            sleep(3);
+            sleep(1);
         }
     }
 
@@ -82,6 +82,12 @@ class CompressEventAction extends AbstractAction
             ob_flush();
             flush();
         }
+
+        echo 'event: CLOSE'.PHP_EOL;
+        echo 'data: '.PHP_EOL.PHP_EOL;
+
+        ob_flush();
+        flush();
 
         return [];
     }
