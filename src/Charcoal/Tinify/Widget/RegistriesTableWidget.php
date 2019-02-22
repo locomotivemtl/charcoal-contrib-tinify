@@ -32,4 +32,12 @@ class RegistriesTableWidget extends TableWidget
     {
         return false;
     }
+
+    /**
+     * @return boolean
+     */
+    public function showObjectActions()
+    {
+        return false;
+    }
 }
