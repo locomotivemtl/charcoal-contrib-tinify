@@ -21,8 +21,6 @@
     Compression_Dashboard.prototype.set_opts = function (opts) {
         // Globals
         this._opts = opts;
-
-        var opts = this.opts() || {};
         this._options = opts.options || {};
 
         return this;
@@ -54,7 +52,7 @@
             }
         };
 
-        var dialog = this.dialog(dialogOpts, function (response) {
+        this.dialog(dialogOpts, function (response) {
             if (response.success) {
                 if (!response.widget_id) {
                     return false;

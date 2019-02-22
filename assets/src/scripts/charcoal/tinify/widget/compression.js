@@ -1,4 +1,4 @@
-/* global Charcoal */
+/* global Charcoal,EventSource */
 /**
  * Compression widget
  *
@@ -12,16 +12,14 @@
      */
     var Compression = function (data) {
         Charcoal.Admin.Widget.call(this, data);
-        this.set_properties(data);
     };
 
     Compression.prototype             = Object.create(Charcoal.Admin.Widget.prototype);
     Compression.prototype.constructor = Charcoal.Admin.Widget_Compression;
     Compression.prototype.parent      = Charcoal.Admin.Widget.prototype;
 
-    Compression.prototype.set_properties = function (data) {
+    Compression.prototype.set_opts = function (opts) {
         // Globals
-        var opts = this.opts() || {};
         this._options = opts.options || {};
         this._source = null;
 
@@ -29,6 +27,8 @@
         this.$widget  = $(this.element());
         this.$pBar = this.$widget.find('.js-progress-bar');
         this.$pText = this.$widget.find('.js-progress-text');
+
+        return this;
     };
 
     Compression.prototype.init = function () {
