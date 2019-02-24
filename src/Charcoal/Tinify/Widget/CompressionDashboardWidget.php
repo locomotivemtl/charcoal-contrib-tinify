@@ -77,14 +77,6 @@ class CompressionDashboardWidget extends AdminWidget
     }
 
     /**
-     * @return mixed
-     */
-    public function usageWidget()
-    {
-        return $this->widgetFactory()->create(UsageWidget::class);
-    }
-
-    /**
      * @throws Exception If the widget factory dependency was not previously set / injected.
      * @return FactoryInterface
      */

@@ -12,9 +12,19 @@
     <section class="o-container -top -bottom">
         {{> charcoal/admin/widget/feedbacks }}
         <div class="dashboard">
-            {{# CompressionDashboardWidget }}
-                {{> charcoal/tinify/widget/compression-dashboard }}
-            {{/ CompressionDashboardWidget }}
+            <div class="o-section">
+                <div class="row">
+                {{# CompressionDashboardWidget }}
+                    {{> charcoal/tinify/widget/compression-dashboard }}
+                {{/ CompressionDashboardWidget }}
+
+                {{# usageWidget }}
+                    {{> charcoal/tinify/widget/usage }}
+                {{/ usageWidget }}
+
+                </div>
+            </div>
+
             {{# registryWidget }}
                 {{> charcoal/tinify/widget/registries-table }}
             {{/ registryWidget }}

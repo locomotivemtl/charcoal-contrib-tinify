@@ -1,0 +1,22 @@
+<div class="col-6" id="{{ widgetId }}">
+    <section class="card card-table">
+        <header class="card-header">
+            <h3 class="card-title mb-0">{{# _t }}Compressions this month{{/ _t }}</h3>
+        </header>
+        <div class="o-section position-relative">
+            <div class="js-graph-container" style="height:{{ height }}px;"></div>
+        </div>
+        {{> charcoal/admin/widget/inc.loader }}
+    </section>
+</div>
+{{ assets.enqueue.js.echarts_js }}
+
+{{# assets.inject.js }}
+    {{> charcoal/admin/l10n/widget.js }}
+    Charcoal.Admin.manager().add_widget({
+    id: '{{ widgetId }}',
+    type: 'charcoal/admin/widget/graph',
+    widget_type: '{{ type }}',
+    data: {{& escapedWidgetDataForJsAsJson }}
+    });
+{{/ assets.inject.js }}
