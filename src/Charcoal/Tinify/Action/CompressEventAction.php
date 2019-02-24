@@ -79,14 +79,12 @@ class CompressEventAction extends AbstractAction
         foreach ($this->optimizeFiles() as $file) {
             echo 'data: '.json_encode($file).PHP_EOL.PHP_EOL;
 
-            ob_flush();
             flush();
         }
 
         echo 'event: CLOSE'.PHP_EOL;
         echo 'data: '.PHP_EOL.PHP_EOL;
 
-        ob_flush();
         flush();
 
         return [];

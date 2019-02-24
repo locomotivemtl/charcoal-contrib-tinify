@@ -31,6 +31,8 @@
         this.$widget  = this.element();
 
         this.$widget.on('click.compression', '.js-optimize-btn',this.on_optimize.bind(this));
+        
+        
     };
 
     Compression_Dashboard.prototype.on_optimize = function () {
