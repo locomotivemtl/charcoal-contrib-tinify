@@ -57,6 +57,8 @@ class CompressEventAction extends AbstractAction
      */
     private function optimizeFiles()
     {
+
+
         for ($i = 1; $i <= 10; $i++) {
             yield [
                 'id'       => 'test_'.$i,
@@ -68,6 +70,22 @@ class CompressEventAction extends AbstractAction
     }
 
     /**
+     * @param integer $progress The number of tasks done.
+     * @return array
+     */
+    private function parseProgress($progress)
+    {
+        if (!isset($this->taskTotal)) {
+            $this->taskTotal = $this->tinifyService()->numUncompressedFiles();
+        }
+
+        return [
+            'text' => sprintf('%s / %s', $progress, $this->taskTotal),
+            'progress' => floor(100 / $this->taskTotal * $progress)
+        ];
+    }
+
+    /**
      * Returns an associative array of results (set after being  invoked / run).
      *
      * The raw array of results will be called from `__invoke()`.
@@ -76,8 +94,17 @@ class CompressEventAction extends AbstractAction
      */
     public function results()
     {
-        foreach ($this->optimizeFiles() as $file) {
-            echo 'data: '.json_encode($file).PHP_EOL.PHP_EOL;
+        $progress = 0;
+        $statusUpdate = $this->parseProgress($progress);
+        echo 'data: '.json_encode($statusUpdate).PHP_EOL.PHP_EOL;
+
+        flush();
+
+        foreach ($this->tinifyService()->compressFiles() as $file) {
+            $progress ++;
+
+            $statusUpdate = $this->parseProgress($progress);
+            echo 'data: '.json_encode($statusUpdate).PHP_EOL.PHP_EOL;
 
             flush();
         }
