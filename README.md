@@ -7,7 +7,7 @@ Charcoal Tinify
 [![Coverage Status][badge-coveralls]][dev-coveralls]
 [![Build Status][badge-travis]][dev-travis]
 
-A [Charcoal][charcoal-app] service provider my cool feature.
+A [Charcoal][charcoal-app] module to add tinify integration to charcoal.
 
 
 
@@ -15,9 +15,6 @@ A [Charcoal][charcoal-app] service provider my cool feature.
 
 -   [Installation](#installation)
     -   [Dependencies](#dependencies)
--   [Service Provider](#service-provider)
-    -   [Parameters](#parameters)
-    -   [Services](#services)
 -   [Configuration](#configuration)
 -   [Usage](#usage)
 -   [Development](#development)
@@ -44,39 +41,49 @@ $ composer require locomotivemtl/charcoal-contrib-tinify
 #### Required
 
 -   [**PHP 5.6+**](https://php.net): _PHP 7_ is recommended.
-
+-   [**locomotivemtl/charcoal-admin**](https://github.com/locomotivemtl/charcoal-admin) ^0.14.1
+-   [**tinify/tinify**](https://github.com/tinify/tinify-php) ^1.5
 
 
 #### PSR
 
---TBD--
-
-
-
-## Service Provider
-
-### Parameters
-
---TBD--
-
-
-
-### Services
-
---TBD--
-
+-   [**PSR-7**][psr-7]: Common interface for HTTP messages. Fulfilled by Slim.
+-   [**PSR-11**][psr-11]: Common interface for dependency containers. Fulfilled by Pimple.
 
 
 ## Configuration
 
---TBD--
+In your project's config file, require the tinify module like so : 
+```json
+{
+    "modules": {
+        "charcoal/tinify/tinify": {}
+    }
+}
+```
 
+Define an API key, preferably in the admin.json config file since it's use is only required in the cms.
+You can generate a key at [https://tinyjpg.com/developers](https://tinyjpg.com/developers)
+
+```json
+{
+    "apis": {
+        "tinify": {
+            "key": "3FYkvsXPt7VlZbwHsMnHvmZg2g9jW8dJ"
+        }
+    }
+}
+```
 
 
 ## Usage
 
---TBD--
+This contrib adds a menu item to the CMS system menu
+![Example](exemple-1.png?raw=true "Example")
 
+**TODO**
+
+-   Add a script to schedule compressions task via cron.
 
 
 ## Development
@@ -92,7 +99,6 @@ To run the scripts (phplint, phpcs, and phpunit):
 ```shell
 $ composer test
 ```
-
 
 
 ### API Documentation
@@ -128,6 +134,7 @@ The charcoal-contrib-tinify module follows the Charcoal coding-style:
 
 ## Credits
 
+-   [Joel Alphonso](https://github.com/JoelAlphonso)
 -   [Locomotive](https://locomotive.ca/)
 
 
