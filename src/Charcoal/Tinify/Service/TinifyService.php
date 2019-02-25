@@ -123,7 +123,6 @@ class TinifyService
      */
     public function validateConnection()
     {
-
         if (!$this->connectionValidated) {
             $this->connectionValidated = \Tinify\validate();
         }
@@ -136,8 +135,7 @@ class TinifyService
      */
     public function compressFiles()
     {
-        //@todo replace filesData with uncompressed files only.
-        foreach ($this->filesData() as $file) {
+        foreach ($this->uncompressedFiles() as $file) {
             if (file_exists($file['file'])) {
                 $source = Tinify\fromFile($file['file']);
                 $source->toFile($file['file']);
@@ -149,6 +147,8 @@ class TinifyService
                 $registry = $this->modelFactory()
                                  ->create($this->tinifyConfig()->registryObject())
                                  ->setData($file);
+
+                //@TODO Register the compression in a log of some sort.
 
                 $registry->save();
 
@@ -163,10 +163,7 @@ class TinifyService
     public function numCompressedFiles()
     {
         if (!isset($this->numCompressedFiles)) {
-            // Ensure the file containers are parsed
-            $this->parseFilesData();
-
-            $this->numCompressedFiles = count($this->compressedFiles);
+            $this->numCompressedFiles = count($this->compressedFiles());
         }
 
         return $this->numCompressedFiles;
@@ -178,10 +175,7 @@ class TinifyService
     public function numUncompressedFiles()
     {
         if (!isset($this->numUncompressedFiles)) {
-            // Ensure the file containers are parsed
-            $this->parseFilesData();
-
-            $this->numUncompressedFiles = count($this->uncompressedFiles);
+            $this->numUncompressedFiles = count($this->uncompressedFiles());
         }
 
         return $this->numUncompressedFiles;
@@ -335,6 +329,26 @@ class TinifyService
         $this->filesData = $filesData;
 
         return $this->filesData;
+    }
+
+    /**
+     * @return array
+     */
+    public function uncompressedFiles()
+    {
+        // Ensure the file containers are parsed
+        $this->parseFilesData();
+        return $this->uncompressedFiles;
+    }
+
+    /**
+     * @return array
+     */
+    public function compressedFiles()
+    {
+        // Ensure the file containers are parsed
+        $this->parseFilesData();
+        return $this->compressedFiles;
     }
 
     /**
