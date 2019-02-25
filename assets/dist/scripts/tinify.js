@@ -31,6 +31,8 @@
         this.$widget  = this.element();
 
         this.$widget.on('click.compression', '.js-optimize-btn',this.on_optimize.bind(this));
+
+
     };
 
     Compression_Dashboard.prototype.on_optimize = function () {
@@ -46,7 +48,7 @@
                 }.bind(this),
                 onhidden: function () {
                     $.each(Charcoal.Admin.manager().components.widgets, function (ident, widget) {
-                        widget.reload();
+                        widget.reload(null, true);
                     });
                 }
             }
