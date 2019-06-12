@@ -37,7 +37,8 @@ class TinifyServiceProvider implements ServiceProviderInterface
                 'tinify/config' => $container['tinify/config'],
                 'model/factory' => $container['model/factory'],
                 'database'      => $container['database'],
-                'translator'    => $container['translator']
+                'translator'    => $container['translator'],
+                'logger'        => $container['logger']
             ]);
         };
     }

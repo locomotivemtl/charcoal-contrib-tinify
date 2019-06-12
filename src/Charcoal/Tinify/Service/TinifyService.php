@@ -4,6 +4,7 @@ namespace Charcoal\Tinify\Service;
 
 //Psr
 use Charcoal\Admin\Ui\FeedbackContainerTrait;
+use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 
 // from charcoal-core
@@ -33,6 +34,7 @@ class TinifyService
     use ModelFactoryTrait;
     use TranslatorAwareTrait;
     use FeedbackContainerTrait;
+    use LoggerAwareTrait;
 
     /**
      * @var string $key
@@ -102,6 +104,8 @@ class TinifyService
 
         // create dependable tables
         $this->createObjTable($this->registryProto());
+
+        $this->setLogger($data['logger']);
     }
 
     /**
@@ -150,9 +154,13 @@ class TinifyService
 
                 //@TODO Register the compression in a log of some sort.
 
-                $registry->save();
+                try {
+                    $registry->save();
 
-                yield $registry;
+                    yield $registry;
+                } catch (\Exception $exception) {
+                    $this->logger->error($exception->getMessage());
+                }
             }
         }
     }
