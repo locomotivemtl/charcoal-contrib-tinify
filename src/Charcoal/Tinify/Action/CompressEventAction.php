@@ -98,6 +98,7 @@ class CompressEventAction extends AbstractAction
         $statusUpdate = $this->parseProgress($progress);
         echo 'data: '.json_encode($statusUpdate).PHP_EOL.PHP_EOL;
 
+        ob_flush();
         flush();
 
         foreach ($this->tinifyService()->compressFiles() as $file) {
@@ -106,12 +107,14 @@ class CompressEventAction extends AbstractAction
             $statusUpdate = $this->parseProgress($progress);
             echo 'data: '.json_encode($statusUpdate).PHP_EOL.PHP_EOL;
 
+            ob_flush();
             flush();
         }
 
         echo 'event: CLOSE'.PHP_EOL;
         echo 'data: '.PHP_EOL.PHP_EOL;
 
+        ob_flush();
         flush();
 
         return [];
