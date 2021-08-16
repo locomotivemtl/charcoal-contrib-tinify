@@ -31,7 +31,7 @@
         },
         "system_menu": {
             "items": {
-                "users": {
+                "tinify": {
                     "required_acl_permissions": ["system/admin"],
                     "active": true,
                     "label": "Image compression",
